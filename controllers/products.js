@@ -1,8 +1,9 @@
 
-const products = [];
+const Product = require('../models/Product');
 
 
-exports.getProducts = (req, res, next) => {
+exports.getProducts = async (req, res, next) => {
+  const products = await Product.fetchAll()
   res.render('shop', {
     prods: products,
     pageTitle: 'Shop',
@@ -25,6 +26,7 @@ exports.getAddProduct = (req, res, next) => {
   };
 
 exports.addProduct  = (req, res, next) => {
-  products.push({ title: req.body.title });
+  const product = new Product(req.body.title);
+  product.save();
   res.redirect('/shop');
 };
